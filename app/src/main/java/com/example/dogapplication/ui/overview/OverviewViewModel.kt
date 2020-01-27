@@ -58,7 +58,7 @@ class OverviewViewModel : ViewModel() {
     private fun getDogBreeds() {
         coroutineScope.launch {
             // Get the Deferred object for our Retrofit request
-            val getBreedsDeferred = DogsApi.retrofitService.getBreeds()
+            val getBreedsDeferred = DogsApi.retrofitService.getBreedsAsync()
             try {
                 // this will run on a thread managed by Retrofit
                 val breedsResponse = getBreedsDeferred.await()
@@ -76,7 +76,7 @@ class OverviewViewModel : ViewModel() {
     private fun getDogImage(breed: String) {
         coroutineScope.launch {
             // Get the Deferred object for our Retrofit request
-            val getImagesDeferred = DogsApi.retrofitService.getBreedImage(breed)
+            val getImagesDeferred = DogsApi.retrofitService.getBreedImageAsync(breed)
             try {
                 // this will run on a thread managed by Retrofit
                 val imageResponse = getImagesDeferred.await()

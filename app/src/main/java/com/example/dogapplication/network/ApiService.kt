@@ -35,10 +35,10 @@ private val retrofit = Retrofit.Builder()
  */
 interface ApiService {
     @GET("breeds/list/all")
-    fun getBreeds(): Deferred<BreedsResponse>
+    fun getBreedsAsync(): Deferred<BreedsResponse>
 
     @GET("breed/{breed}/images/random")
-    fun getBreedImage(@Path("breed") breed: String): Deferred<ImageResponse>
+    fun getBreedImageAsync(@Path("breed") breed: String): Deferred<ImageResponse>
 }
 
 /**
