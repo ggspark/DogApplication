@@ -29,8 +29,27 @@ class OverviewViewModel : ViewModel() {
             try {
                 // this will run on a thread managed by Retrofit
                 val breedsResponse = getBreedsDeferred.await()
-                Log.i("Response", breedsResponse.status)
-                Log.i("Response", breedsResponse.message.toString())
+
+                val breedList = breedsResponse.message.keys.toList()
+                breedList.forEach {
+                    getDogImage(it)
+                }
+            } catch (e: Exception) {
+
+            }
+        }
+    }
+
+
+    private fun getDogImage(breed: String) {
+        coroutineScope.launch {
+            // Get the Deferred object for our Retrofit request
+            val getImagesDeferred = DogsApi.retrofitService.getBreedImage(breed)
+            try {
+                // this will run on a thread managed by Retrofit
+                val imageResponse = getImagesDeferred.await()
+                Log.i("Response", imageResponse.status)
+                Log.i("Response", imageResponse.message)
             } catch (e: Exception) {
 
             }

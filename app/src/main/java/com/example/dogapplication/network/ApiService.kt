@@ -7,6 +7,7 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 private const val BASE_URL = "https://dog.ceo/api/"
 
@@ -35,6 +36,9 @@ private val retrofit = Retrofit.Builder()
 interface ApiService {
     @GET("breeds/list/all")
     fun getBreeds(): Deferred<BreedsResponse>
+
+    @GET("breed/{breed}/images/random")
+    fun getBreedImage(@Path("breed") breed: String): Deferred<ImageResponse>
 }
 
 /**
