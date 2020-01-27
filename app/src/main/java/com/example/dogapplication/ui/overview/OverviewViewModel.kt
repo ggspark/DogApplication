@@ -19,6 +19,29 @@ class OverviewViewModel : ViewModel() {
     val dogsList: LiveData<ArrayList<Dog>>
         get() = _dogsList
 
+    // Internally, we use a MutableLiveData to handle navigation to the selected dog
+    private val _navigateToSelectedDog = MutableLiveData<Dog>()
+
+    // The external immutable LiveData for the navigation property
+    val navigateToSelectedDog: LiveData<Dog>
+        get() = _navigateToSelectedDog
+
+    /**
+     * When the dog is clicked, set the [_navigateToSelectedDog] [MutableLiveData]
+     * @param dog The [Dog] that was clicked on.
+     */
+    fun displayDogDetails(dog: Dog) {
+        _navigateToSelectedDog.value = dog
+    }
+
+    /**
+     * After the navigation has taken place, make sure _navigateToSelectedDog is set to null
+     */
+    fun displayDogDetailsComplete() {
+        _navigateToSelectedDog.value = null
+    }
+
+
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
 

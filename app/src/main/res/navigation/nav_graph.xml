@@ -18,5 +18,9 @@
         android:id="@+id/detailFragment"
         android:name="com.example.dogapplication.ui.detail.DetailFragment"
         android:label="detail_fragment"
-        tools:layout="@layout/detail_fragment" />
+        tools:layout="@layout/detail_fragment">
+        <argument
+            android:name="selectedDog"
+            app:argType="com.example.dogapplication.entity.Dog" />
+    </fragment>
 </navigation>
