@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.dogapplication.databinding.OverviewFragmentBinding
 
@@ -17,7 +17,7 @@ class OverviewFragment : Fragment() {
      * Lazily initialize our [OverviewViewModel].
      */
     private val viewModel: OverviewViewModel by lazy {
-        ViewModelProviders.of(this).get(OverviewViewModel::class.java)
+        ViewModelProvider(this).get(OverviewViewModel::class.java)
     }
 
 
@@ -44,7 +44,8 @@ class OverviewFragment : Fragment() {
         viewModel.navigateToSelectedDog.observe(viewLifecycleOwner, Observer {
             if (null != it) {
                 // Must find the NavController from the Fragment
-                this.findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToDetailFragment(it))
+                this.findNavController()
+                    .navigate(OverviewFragmentDirections.actionOverviewFragmentToDetailFragment(it))
                 // Tell the ViewModel we've made the navigate call to prevent multiple navigation
                 viewModel.displayDogDetailsComplete()
             }

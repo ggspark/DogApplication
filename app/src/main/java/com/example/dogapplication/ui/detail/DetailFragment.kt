@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.example.dogapplication.databinding.DetailFragmentBinding
 
 class DetailFragment : Fragment() {
@@ -19,7 +19,7 @@ class DetailFragment : Fragment() {
         binding.lifecycleOwner = this
         val dog = DetailFragmentArgs.fromBundle(arguments!!).selectedDog
         val viewModelFactory = DetailViewModelFactory(dog, application)
-        binding.viewModel = ViewModelProviders.of(
+        binding.viewModel = ViewModelProvider(
             this, viewModelFactory
         ).get(DetailViewModel::class.java)
         return binding.root
