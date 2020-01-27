@@ -1,7 +1,9 @@
 package com.example.dogapplication.ui.overview
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.dogapplication.entity.Dog
 import com.example.dogapplication.network.DogsApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -9,6 +11,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class OverviewViewModel : ViewModel() {
+
+    // Internally, we use a MutableLiveData, because we will be updating the List of Dog
+    // with new values
+    private val _dogsList = MutableLiveData<ArrayList<Dog>>()
+    // The external LiveData interface to the dogsList is immutable, so only this class can modify
+    val dogsList: LiveData<ArrayList<Dog>>
+        get() = _dogsList
 
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
@@ -18,6 +27,7 @@ class OverviewViewModel : ViewModel() {
 
 
     init {
+        _dogsList.value = ArrayList()
         getDogBreeds()
     }
 
@@ -29,7 +39,6 @@ class OverviewViewModel : ViewModel() {
             try {
                 // this will run on a thread managed by Retrofit
                 val breedsResponse = getBreedsDeferred.await()
-
                 val breedList = breedsResponse.message.keys.toList()
                 breedList.forEach {
                     getDogImage(it)
@@ -48,8 +57,9 @@ class OverviewViewModel : ViewModel() {
             try {
                 // this will run on a thread managed by Retrofit
                 val imageResponse = getImagesDeferred.await()
-                Log.i("Response", imageResponse.status)
-                Log.i("Response", imageResponse.message)
+                val dog = Dog(breed, imageResponse.message)
+                _dogsList.value?.add(dog)
+                _dogsList.value = ArrayList(_dogsList.value as ArrayList)
             } catch (e: Exception) {
 
             }
