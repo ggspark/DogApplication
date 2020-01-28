@@ -47,6 +47,7 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     private val dogsRepository = DogsRepository(database)
 
     val dogsList = dogsRepository.dogs
+    val networkStatus = dogsRepository.status
 
     init {
         coroutineScope.launch {

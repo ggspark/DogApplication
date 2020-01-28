@@ -1,6 +1,7 @@
 package com.example.dogapplication.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.dogapplication.database.DatabaseDog
 import com.example.dogapplication.database.DogsDatabase
@@ -21,10 +22,18 @@ class DogsRepository(private val database: DogsDatabase) {
         }
 
     /**
+     * Livedata for network loading status
+     */
+    private val _status = MutableLiveData<Boolean>()
+    val status: LiveData<Boolean>
+        get() = _status
+
+    /**
      * Fetch dogs from the api and store in database
      */
     suspend fun refreshDogs() {
         withContext(Dispatchers.IO) {
+            _status.postValue(true)
             try {
                 val getBreedsDeferred = DogsApi.retrofitService.getBreedsAsync()
                 // this will run on a thread managed by Retrofit
@@ -39,8 +48,9 @@ class DogsRepository(private val database: DogsDatabase) {
                     dogsList.add(dog)
                 }
                 database.dogDao.insertAll(dogsList)
+                _status.postValue(false)
             } catch (e: Exception) {
-
+                _status.postValue(false)
             }
         }
     }

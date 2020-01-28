@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.example.dogapplication.ui.overview.OverviewViewModel" />
@@ -31,6 +33,18 @@
             app:spanCount="2"
             tools:itemCount="16"
             tools:listitem="@layout/grid_view_item" />
+
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateOnly="true"
+            android:scaleY="8"
+            android:visibility="@{viewModel.networkStatus ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/photos_grid" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
